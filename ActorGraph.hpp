@@ -3,7 +3,7 @@
  * Author: <YOUR NAME HERE>
  * Date:   <DATE HERE>
  *
- * This file is meant to exist as a container for starter code that you can use to read the input file format
+ * This file is meant to exist as a container for starter code that you can us:e to read the input file format
  * defined in movie_casts.tsv. Feel free to modify any/all aspects as you wish.
  */
 
@@ -11,9 +11,10 @@
 #define ACTORGRAPH_HPP
 
 #include <iostream>
-
+#include <vector>
 #include <unordered_map>
-#include <pair>
+#include <utility>
+#include "Movie.hpp"
 
 // Maybe include some data structures here
 using namespace std;
@@ -22,12 +23,14 @@ class ActorGraph {
 protected:
   
     // Maybe add class data structure(s) here
-	unordered_map database;
+	unordered_map<string, vector<pair<Movie*, int>>> databaseActor;
+	unordered_map<string, Movie*> databaseMovie;
 	
 
 public:
     ActorGraph(void);
-
+	
+	void insert(string actorName, string movieName, int year, int weight);
     // Maybe add some more methods here
   
     /** You can modify this method definition as you wish

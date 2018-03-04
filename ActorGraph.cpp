@@ -6,66 +6,88 @@
  * This file is meant to exist as a container for starter code that you can use to read the input file format
  * defined in movie_casts.tsv. Feel free to modify any/all aspects as you wish.
  */
- 
+
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
+#include <utility>
 #include "ActorGraph.hpp"
 
 using namespace std;
 
 ActorGraph::ActorGraph(void) {}
 
+
+void ActorGraph::insert(string actorName, string movieName, int year, int weight) {
+	unordered_map<string, Movie*>::iterator it;
+	unordered_map<string, vector<pair<Movie*, int>>>::iterator it2;
+	pair<unordered_map<string,Movie*>::iterator, bool> s;
+	if((it = this->databaseMovie.find(movieName)) == this->databaseMovie.end())	
+	{		
+		Movie* movieObject = new Movie(movieName, year);
+		movieObject->addActor(actorName);
+		s = this->databaseMovie.insert(pair<string, Movie*> (movieName, movieObject));	
+		it = s.first;
+	} else {
+		it->second->addActor(actorName);
+	}	
+	if((it2 = this->databaseActor.find(actorName)) == databaseActor.end()) {
+		vector<pair<Movie*, int>> connections;
+		this->databaseActor.insert(pair<string, vector<pair<Movie*, int>>> (actorName, connections));
+	} else { 
+		(it2)->second.push_back(pair<Movie*, int> ((it)->second, weight));
+	}
+}
 bool ActorGraph::loadFromFile(const char* in_filename, bool use_weighted_edges) {
-    // Initialize the file stream
-    ifstream infile(in_filename);
+	// Initialize the file stream
+	ifstream infile(in_filename);
 
-    bool have_header = false;
-  
-    // keep reading lines until the end of file is reached
-    while (infile) {
-        string s;
-    
-        // get the next line
-        if (!getline( infile, s )) break;
+	bool have_header = false;
 
-        if (!have_header) {
-            // skip the header
-            have_header = true;
-            continue;
-        }
+	// keep reading lines until the end of file is reached
+	while (infile) {
+		string s;
 
-        istringstream ss( s );
-        vector <string> record;
+		// get the next line
+		if (!getline( infile, s )) break;
 
-        while (ss) {
-            string next;
-      
-            // get the next string before hitting a tab character and put it in 'next'
-            if (!getline( ss, next, '\t' )) break;
+		if (!have_header) {
+			// skip the header
+			have_header = true;
+			continue;
+		}
 
-            record.push_back( next );
-        }
-    
-        if (record.size() != 3) {
-            // we should have exactly 3 columns
-            continue;
-        }
+		istringstream ss( s );
+		vector <string> record;
 
-        string actor_name(record[0]);
-        string movie_title(record[1]);
-        int movie_year = stoi(record[2]);
-    
-        // we have an actor/movie relationship, now what?
-    }
+		while (ss) {
+			string next;
 
-    if (!infile.eof()) {
-        cerr << "Failed to read " << in_filename << "!\n";
-        return false;
-    }
-    infile.close();
+			// get the next string before hitting a tab character and put it in 'next'
+			if (!getline( ss, next, '\t' )) break;
 
-    return true;
+			record.push_back( next );
+		}
+
+		if (record.size() != 3) {
+			// we should have exactly 3 columns
+			continue;
+		}
+
+		string actor_name(record[0]);
+		string movie_title(record[1]);
+		int movie_year = stoi(record[2]);
+
+		// we have an actor/movie relationship, now what?
+	}
+
+	if (!infile.eof()) {
+		cerr << "Failed to read " << in_filename << "!\n";
+		return false;
+	}
+	infile.close();
+
+	return true;
 }

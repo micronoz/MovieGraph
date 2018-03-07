@@ -42,7 +42,7 @@ string findPairPath(string actor1, string actor2, unordered_map<string, Actor*> 
 				if((*adjacentActors)->isVisited() == false) {
 					queue.push_back(*adjacentActors);
 					(*adjacentActors)->visit();
-					(*adjacentActors)->prev = pair<Actor*, string>(current, movieIter->second->name + "#@" + to_string(movieIter->second->year));
+					(*adjacentActors)->prev = pair<Actor*, string>(current, movieIter->second->name);
 				}
 				adjacentActors++;
 			}
@@ -65,7 +65,10 @@ string findPairPath(string actor1, string actor2, unordered_map<string, Actor*> 
 	
 	auto finalIter = result.cbegin();
 	auto finalIterE = result.end();
-
+	if(result.front() != actor1) {
+		ss << endl;
+		return ss.str();
+	}
 	while(finalIter != finalIterE) {
 		ss << "(" << *finalIter << ")";
 		finalIter++;
@@ -81,6 +84,7 @@ string findPairPath(string actor1, string actor2, unordered_map<string, Actor*> 
 void findPaths(const char* in_filename, const char* out_filename, unordered_map<string, Actor*> * actorData, unordered_map<string, Movie*> * movieData) {
 	ifstream infile(in_filename);
 	ofstream outfile(out_filename);
+	outfile <<"(actor)--[movie#@year]-->(actor)--..." << endl;
 	bool have_header = false;
 	vector <string> record;
 	while (infile) {

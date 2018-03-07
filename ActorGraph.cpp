@@ -25,6 +25,7 @@ void ActorGraph::insert(string actorName, string movieName, int year, bool weigh
 	unordered_map<string, Actor*>::iterator it2;
 	pair<unordered_map<string,Movie*>::iterator, bool> s;
 	pair<unordered_map<string,Actor*>::iterator, bool> s2;
+	movieName += ("#@" + to_string(year));
 	if((it = this->databaseMovie.find(movieName)) == this->databaseMovie.end())	
 	{		
 		Movie* movieObject = new Movie(movieName, year, weighted);

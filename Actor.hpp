@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include "Movie.hpp"
+#include <utility>
 using namespace std;
 
 class Actor {
@@ -11,10 +12,16 @@ class Actor {
 		Actor(string actorName):name(actorName) {}
 		string name;
 		vector<string> movies;
+		vector<Actor*> friends;
+		int dist;
+		pair<Actor*, string> prev;
 		bool visited = false;
 
 		void addMovie(string movie) {
 			movies.push_back(movie);
+		}
+		void addFriend(Actor* actorName) {
+			friends.push_back(actorName);
 		}
 
 		bool isVisited() {
@@ -27,6 +34,12 @@ class Actor {
 	
 		void devisit() {
 			this->visited = false;
+		}
+
+		void reset() {
+			this->devisit();
+			this->dist = 0;
+			this->prev = pair<Actor*, string>(nullptr, "");
 		}
 
 };

@@ -32,9 +32,12 @@ public:
     ActorGraph(void);
 	bool weighted = false;
 	void insert(string actorName, string movieName, int year, bool weight);
-
+	void buildAdjacent();
 	unordered_map<string, Actor*> * getActors() {
 		return &databaseActor;
+	}
+	unordered_map<string, Movie*> * getMovies() {
+		return &databaseMovie;
 	}
     // Maybe add some more methods here
   

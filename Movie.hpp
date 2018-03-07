@@ -22,15 +22,12 @@ class Movie {
 			return this->name;
 		}
 		
-		vector<Actor*>& getActors() {
-			return actors;
-		}
 
 		
-	protected:
+		vector<Actor*> actors;
 		string name;
 		int year;
-		vector<Actor*> actors;
+	protected:
 		bool visited = false;
 
 

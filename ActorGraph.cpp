@@ -96,8 +96,18 @@ bool ActorGraph::loadFromFile(const char* in_filename, bool use_weighted_edges) 
 		return false;
 	}
 	infile.close();
-
+//	this->buildAdjacent();
 	return true;
 }
 
-
+void ActorGraph::buildAdjacent() {
+	auto it = this->databaseActor.begin();
+	auto itE = this->databaseActor.end();	
+	Movie* currentMov;
+	Actor* currentAct;
+	while(it != itE) {
+		currentAct = it->second;
+		
+		
+	}
+}

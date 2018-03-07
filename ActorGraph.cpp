@@ -20,30 +20,37 @@ using namespace std;
 ActorGraph::ActorGraph(void) {}
 
 
-void ActorGraph::insert(string actorName, string movieName, int year, int weight) {
+void ActorGraph::insert(string actorName, string movieName, int year, bool weighted) {
 	unordered_map<string, Movie*>::iterator it;
-	unordered_map<string, vector<pair<Movie*, int>>>::iterator it2;
+	unordered_map<string, Actor*>::iterator it2;
 	pair<unordered_map<string,Movie*>::iterator, bool> s;
+	pair<unordered_map<string,Actor*>::iterator, bool> s2;
 	if((it = this->databaseMovie.find(movieName)) == this->databaseMovie.end())	
 	{		
-		Movie* movieObject = new Movie(movieName, year);
-		movieObject->addActor(actorName);
+		Movie* movieObject = new Movie(movieName, year, weighted);
 		s = this->databaseMovie.insert(pair<string, Movie*> (movieName, movieObject));	
 		it = s.first;
-	} else {
-		it->second->addActor(actorName);
-	}	
-	if((it2 = this->databaseActor.find(actorName)) == databaseActor.end()) {
-		vector<pair<Movie*, int>> connections;
-		this->databaseActor.insert(pair<string, vector<pair<Movie*, int>>> (actorName, connections));
-	} else { 
-		(it2)->second.push_back(pair<Movie*, int> ((it)->second, weight));
+	}
+	if((it2 = this->databaseActor.find(actorName)) != this->databaseActor.end()) {
+		it->second->addActor(it2->second);
+		it2->second->addMovie(it->first);
+	}
+	else {
+		s2 = this->databaseActor.insert(pair<string, Actor*> (actorName, new Actor(actorName)));
+		it2 = s2.first;
+		it->second->addActor(it2->second);
+		it2->second->addMovie(it->first);	
 	}
 }
+
+
+
 bool ActorGraph::loadFromFile(const char* in_filename, bool use_weighted_edges) {
 	// Initialize the file stream
 	ifstream infile(in_filename);
-
+//	ActorGraph* graph = new ActorGraph();
+	if(use_weighted_edges)
+		this->weighted = true;
 	bool have_header = false;
 
 	// keep reading lines until the end of file is reached
@@ -79,7 +86,8 @@ bool ActorGraph::loadFromFile(const char* in_filename, bool use_weighted_edges) 
 		string actor_name(record[0]);
 		string movie_title(record[1]);
 		int movie_year = stoi(record[2]);
-
+		
+		this->insert(actor_name, movie_title, movie_year, use_weighted_edges);
 		// we have an actor/movie relationship, now what?
 	}
 
@@ -91,3 +99,5 @@ bool ActorGraph::loadFromFile(const char* in_filename, bool use_weighted_edges) 
 
 	return true;
 }
+
+

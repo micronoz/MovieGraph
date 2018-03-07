@@ -1,31 +1,37 @@
-#ifndef Movie_HPP
-#define Movie_HPP
+#ifndef MOVIE_HPP
+#define MOVIE_HPP
 
 #include <vector>
 #include <string>
+#include "Actor.hpp"
 
 using namespace std;
 
 class Movie {
 	public:
-		Movie(string nameIn, int yearIn):name(nameIn), year(yearIn) {}
-	
-		void addActor(const string & actorName) {
+		Movie(string nameIn, int yearIn, bool weighted):name(nameIn), year(yearIn) {
+			if(weighted)
+				this->weight = 1+(2018-yearIn);
+		}
+		int weight = 1;
+		void addActor(Actor* actorName) {
 			actors.push_back(actorName);
 		}
 
 		string getMovie() {
 			return this->name;
 		}
-
-		int getYear() {
-			return this->year;
+		
+		vector<Actor*>& getActors() {
+			return actors;
 		}
 
+		
 	protected:
 		string name;
 		int year;
-		vector<string> actors;
+		vector<Actor*> actors;
+		bool visited = false;
 
 
 };

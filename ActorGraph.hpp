@@ -15,6 +15,7 @@
 #include <unordered_map>
 #include <utility>
 #include "Movie.hpp"
+#include "Actor.hpp"
 
 // Maybe include some data structures here
 using namespace std;
@@ -23,14 +24,18 @@ class ActorGraph {
 protected:
   
     // Maybe add class data structure(s) here
-	unordered_map<string, vector<pair<Movie*, int>>> databaseActor;
+	unordered_map<string, Actor*> databaseActor;
 	unordered_map<string, Movie*> databaseMovie;
 	
 
 public:
     ActorGraph(void);
-	
-	void insert(string actorName, string movieName, int year, int weight);
+	bool weighted = false;
+	void insert(string actorName, string movieName, int year, bool weight);
+
+	unordered_map<string, Actor*> * getActors() {
+		return &databaseActor;
+	}
     // Maybe add some more methods here
   
     /** You can modify this method definition as you wish

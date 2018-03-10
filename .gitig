@@ -1,0 +1,10 @@
+refawardsceremony
+reflinkpredictor
+refpathfinder
+sampleInputPart1
+sampleInputPart2
+tsv
+.gitignore
+*.o
+*.swp
+pathfinder

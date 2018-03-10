@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include "Movie.hpp"
+#include <climits>
 #include <utility>
 using namespace std;
 
@@ -14,6 +15,7 @@ class Actor {
 		vector<string> movies;
 		vector<Actor*> friends;
 		int dist;
+		int weight;
 		pair<Actor*, string> prev;
 		bool visited = false;
 
@@ -38,8 +40,9 @@ class Actor {
 
 		void reset() {
 			this->devisit();
-			this->dist = 0;
+			this->dist = INT_MAX;
 			this->prev = pair<Actor*, string>(nullptr, "");
+			this->weight = 1;
 		}
 
 };

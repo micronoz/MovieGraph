@@ -30,6 +30,24 @@ protected:
 
 public:
     ActorGraph(void);
+	~ActorGraph() {
+		auto iter1 = databaseActor.begin();
+		auto iter1E = databaseActor.end();
+		auto iter2 = databaseMovie.begin();
+		auto iter2E = databaseMovie.end();
+
+		while(iter1 != iter1E) {
+			delete((*iter1).second);
+			iter1++;
+		}
+		databaseActor.clear();
+
+		while(iter2 != iter2E) {
+			delete((*iter2).second);
+			iter2++;
+		}
+		databaseMovie.clear();
+	}
 	bool weighted = false;
 	void insert(string actorName, string movieName, int year, bool weight);
 	void buildAdjacent();

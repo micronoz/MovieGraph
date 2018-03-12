@@ -33,23 +33,38 @@ void ActorGraph::insert(string actorName, string movieName, int year, bool weigh
 		it = s.first;
 	}
 	if((it2 = this->databaseActor.find(actorName)) != this->databaseActor.end()) {
+		addFriend(it2->second, it->second);
 		it->second->addActor(it2->second);
-		it2->second->addMovie(it->first);
+		//it2->second->addMovie(it->first);
 	}
 	else {
 		s2 = this->databaseActor.insert(pair<string, Actor*> (actorName, new Actor(actorName)));
 		it2 = s2.first;
+		addFriend(it2->second, it->second);
 		it->second->addActor(it2->second);
-		it2->second->addMovie(it->first);	
+		//it2->second->addMovie(it->first);
 	}
 }
 
+void ActorGraph::addFriend(Actor* actor, Movie* movie) {
+	int movieWeight = movie->weight;
+	vector<GraphEdge*> & friends = actor->friends;
+	GraphEdge* current;
+	auto it = movie->actors.begin();
+	auto itE = movie->actors.end();
+	while(it != itE) {
+		current = new GraphEdge(actor, (*it), movie->name, movieWeight);
+		friends.push_back(current);
+		(*it)->addEdge(current);
+		it++;
+	}
+}
 
 
 bool ActorGraph::loadFromFile(const char* in_filename, bool use_weighted_edges) {
 	// Initialize the file stream
 	ifstream infile(in_filename);
-//	ActorGraph* graph = new ActorGraph();
+	//	ActorGraph* graph = new ActorGraph();
 	if(use_weighted_edges)
 		this->weighted = true;
 	bool have_header = false;
@@ -87,7 +102,7 @@ bool ActorGraph::loadFromFile(const char* in_filename, bool use_weighted_edges) 
 		string actor_name(record[0]);
 		string movie_title(record[1]);
 		int movie_year = stoi(record[2]);
-		
+
 		this->insert(actor_name, movie_title, movie_year, use_weighted_edges);
 		// we have an actor/movie relationship, now what?
 	}
@@ -97,7 +112,7 @@ bool ActorGraph::loadFromFile(const char* in_filename, bool use_weighted_edges) 
 		return false;
 	}
 	infile.close();
-//	this->buildAdjacent();
+	//	this->buildAdjacent();
 	return true;
 }
 
@@ -108,7 +123,7 @@ void ActorGraph::buildAdjacent() {
 	Actor* currentAct;
 	while(it != itE) {
 		currentAct = it->second;
-		
-		
+
+
 	}
 }

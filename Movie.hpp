@@ -8,12 +8,14 @@
 using namespace std;
 
 class Movie {
-	public:
+	public:	
+		int weight;
 		Movie(string nameIn, int yearIn, bool weighted):name(nameIn), year(yearIn) {
 			if(weighted)
 				this->weight = 1+(2018-yearIn);
+			else
+				this->weight = 1;
 		}
-		int weight = 1;
 		void addActor(Actor* actorName) {
 			actors.push_back(actorName);
 		}

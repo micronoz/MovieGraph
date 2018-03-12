@@ -16,6 +16,7 @@
 #include <utility>
 #include "Movie.hpp"
 #include "Actor.hpp"
+#include "GraphEdge.hpp"
 
 // Maybe include some data structures here
 using namespace std;
@@ -57,6 +58,7 @@ public:
 	unordered_map<string, Movie*> * getMovies() {
 		return &databaseMovie;
 	}
+	void addFriend(Actor* actor, Movie* movie);
     // Maybe add some more methods here
   
     /** You can modify this method definition as you wish

@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include "Movie.hpp"
+#include "GraphEdge.hpp"
 #include <climits>
 #include <utility>
 using namespace std;
@@ -12,18 +13,27 @@ class Actor {
 	public:
 		Actor(string actorName):name(actorName) {}
 		string name;
-		vector<string> movies;
-		vector<Actor*> friends;
+		vector<GraphEdge*> friends;
 		int dist;
-		int weight;
-		pair<Actor*, string> prev;
+		GraphEdge* prev; //Point to graph edge
 		bool visited = false;
 
-		void addMovie(string movie) {
-			movies.push_back(movie);
+		
+		/*void addFriend(void* movie) {
+			int movieWeight = movie->weight;
+			GraphEdge* current;
+			auto it = movie->actors.begin();
+			auto itE = movie->actors.end();
+			while(it != itE) {
+				current = new GraphEdge(this->name, (*it)->name, movie, movieWeight);
+				friends.push_back(current);
+				(*it)->addEdge(current);
+				it++;
+			}
 		}
-		void addFriend(Actor* actorName) {
-			friends.push_back(actorName);
+	*/
+		void addEdge(GraphEdge* edge) {
+			friends.push_back(edge);
 		}
 
 		bool isVisited() {
@@ -41,8 +51,7 @@ class Actor {
 		void reset() {
 			this->devisit();
 			this->dist = INT_MAX;
-			this->prev = pair<Actor*, string>(nullptr, "");
-			this->weight = 1;
+			this->prev = nullptr; //Point to a GraphEdge
 		}
 
 };

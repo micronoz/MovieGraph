@@ -27,6 +27,7 @@ protected:
     // Maybe add class data structure(s) here
 	unordered_map<string, Actor*> databaseActor;
 	unordered_map<string, Movie*> databaseMovie;
+	vector<GraphEdge*> allEdges;
 	
 
 public:
@@ -36,6 +37,8 @@ public:
 		auto iter1E = databaseActor.end();
 		auto iter2 = databaseMovie.begin();
 		auto iter2E = databaseMovie.end();
+		auto iter3 = allEdges.begin();
+		auto iter3E = allEdges.end();
 
 		while(iter1 != iter1E) {
 			delete((*iter1).second);
@@ -48,6 +51,12 @@ public:
 			iter2++;
 		}
 		databaseMovie.clear();
+
+		while(iter3 != iter3E) {
+			delete(*iter3);
+			iter3++;
+		}
+		allEdges.clear();
 	}
 	bool weighted = false;
 	void insert(string actorName, string movieName, int year, bool weight);

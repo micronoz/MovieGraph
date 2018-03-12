@@ -17,8 +17,7 @@ class Actor {
 		int dist;
 		GraphEdge* prev; //Point to graph edge
 		bool visited = false;
-
-		
+				
 		/*void addFriend(void* movie) {
 			int movieWeight = movie->weight;
 			GraphEdge* current;

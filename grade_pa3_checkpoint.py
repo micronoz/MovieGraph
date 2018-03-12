@@ -13,7 +13,7 @@ import sys
 # global constants
 PAIRS_HEADER = "Actor1/Actress1\tActor2/Actress2"
 TIME_RANGE = 2 # how many times longer student soln can take than ref soln
-MIN_TIME =  30 # minimum amount of time to allow no matter how fast reference goes
+MIN_TIME =  15 # minimum amount of time to allow no matter how fast reference goes
 LARGE_N = 15 # large number of queries
 OUTPUT_P = "+8 for correct output"
 OUTPUT_F = "+0 for incorrect output"

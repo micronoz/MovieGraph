@@ -55,6 +55,7 @@ void ActorGraph::addFriend(Actor* actor, Movie* movie) {
 	while(it != itE) {
 		current = new GraphEdge(actor, (*it), movie->name, movieWeight);
 		friends.push_back(current);
+		allEdges.push_back(current);
 		(*it)->addEdge(current);
 		it++;
 	}

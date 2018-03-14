@@ -6,7 +6,9 @@ using namespace std;
 
 class GraphEdge {
 	public:
-		GraphEdge(void* actor1, void* actor2, string movieName, int weight):firstActor(actor1), secondActor(actor2), name(movieName), weight(weight) {}
+		GraphEdge(void* actor1, void* actor2, string movieName, int weight):firstActor(actor1), secondActor(actor2), name(movieName), weight(weight) {
+			deleted = false;
+		}
 		int getWeight() {
 			return this->weight;
 		}
@@ -18,11 +20,20 @@ class GraphEdge {
 		string getName() {
 			return this->name;
 		}
+	
+		void removeEdge() {
+			deleted = true;
+		}
+	
+		bool isRemoved() {
+			return deleted;
+		}
 	private:
 		void* firstActor;
 		void* secondActor;
 		string name;
 		int weight;
+		bool deleted;
 };
 
 

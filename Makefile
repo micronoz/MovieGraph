@@ -5,7 +5,7 @@ CXXFLAGS=-std=c++11
 LDFLAGS=
 
 # if passed "type=opt" at command-line, compile with "-O3" flag (otherwise use "-g" for debugging)
-
+#type=opt
 ifeq ($(type),opt)
     CPPFLAGS += -O3
     LDFLAGS += -O3
@@ -19,8 +19,9 @@ all: pathfinder linkpredictor awardsceremony
 
 
 # include what ever source code *.hpp files pathfinder relies on (these are merely the ones that were used in the solution)
-
-pathfinder: ActorGraph.o
+linkpredictor: ActorGraph.o linkpredictor.cpp
+awardsceremony: ActorGraph.o awardsceremony.cpp
+pathfinder: ActorGraph.o pathfinder.cpp
 
 
 
@@ -28,7 +29,7 @@ pathfinder: ActorGraph.o
 
 # Note: you do not have to include a *.cpp file if it aleady has a paired *.hpp file that is already included with class/method headers
 
-ActorGraph.o: GraphEdge.hpp Actor.hpp Movie.hpp ActorGraph.hpp
+ActorGraph.o: GraphEdge.hpp Actor.hpp Movie.hpp ActorGraph.hpp MatrixMultiply.hpp
 
 
 clean:

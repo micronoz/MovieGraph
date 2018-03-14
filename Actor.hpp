@@ -16,6 +16,7 @@ class Actor {
 		vector<GraphEdge*> friends;
 		int dist;
 		GraphEdge* prev; //Point to graph edge
+		int degree;
 		bool visited = false;
 				
 		/*void addFriend(void* movie) {

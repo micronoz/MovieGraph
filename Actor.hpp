@@ -18,6 +18,7 @@ class Actor {
 		GraphEdge* prev; //Point to graph edge
 		int degree;
 		bool visited = false;
+		bool consider = false;
 				
 		/*void addFriend(void* movie) {
 			int movieWeight = movie->weight;
@@ -46,6 +47,17 @@ class Actor {
 	
 		void devisit() {
 			this->visited = false;
+		}
+
+		void considerY() {
+			consider = true;
+		}
+		void considerN() {
+			consider = false;
+		}
+
+		bool isConsidered () {
+			return consider;
 		}
 
 		void reset() {

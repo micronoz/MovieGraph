@@ -9,28 +9,42 @@
 
 using namespace std;
 
-void getCore(Actor* start, int& N) {
-	if (start->degree < N) {
-		for (GraphEdge* x : start->friends) {
-			if (x->isRemoved()) continue;
-			x->removeEdge();
-			((Actor*)(x->getActor(start)))->degree--;
-		}
-		start->visit();
-	}
-	
-	for (auto it = start->friends.begin(); it != start->friends.end(); it++) {
-		if (!(*it)->isRemoved())
-		getCore((Actor*)((*it)->getActor(start)), N);
-	}
+void resetConnection(Actor*& actor) {
+	for (GraphEdge* k : actor->friends)
+		((Actor*)(k->getActor(actor)))->considerN();
+}
 
-	return;
+void removeVertex(Actor*& actor) {
+	Actor* x;
+	for(auto it = actor->friends.begin(); it != actor->friends.end(); it++) {
+		x = ((Actor*)((*it)->getActor(actor)));
+		if (!x->isConsidered())
+			x->degree--;
+		x->considerY();
+	}
+	resetConnection(actor);
+}
+
+void getCore(unordered_map<string, Actor*>* start, int& N) {
+startCore:
+	auto it = start->begin();
+	auto itE = start->end();
+
+	while(it != itE) {
+		if ((it)->second->degree < N && !it->second->isVisited()) {
+			removeVertex((it)->second);
+			(it)->second->visit();
+			goto startCore;
+		}
+		it++;
+	}
 
 }
 
 void buildDegree(ActorGraph*& graph) {
 	auto actorBase = graph->getActors();
 	Actor* current;
+	Actor* other;
 	auto it = actorBase->begin();
 	auto itE = actorBase->end();
 	int i;
@@ -38,9 +52,15 @@ void buildDegree(ActorGraph*& graph) {
 	while(it != itE) {
 		current = it->second;
 		i = 0;
-		for(GraphEdge* y : current->friends)
-			i++;
+		for(GraphEdge* y : current->friends) {
+			other = ((Actor*)(y->getActor(current)));
+			if(!other->isConsidered()) {
+				i++;	
+				other->considerY();
+			}
+		}
 		current->degree = i;
+		resetConnection(current);
 		it++;
 	}
 }
@@ -59,16 +79,29 @@ int main(int argc, char** argv) {
 	int i;
 	char * pEnd;
 	i = strtol(core, &pEnd, 10);
-	getCore((graph->getActors()->begin())->second, i);
+	cout << "Starting core with degree: " << i << endl;
+	getCore((graph->getActors()), i);
+	cout << "End of core" << endl;
 
 	ofstream outfile(output1);
 	auto it = graph->getActors()->begin();
 	auto itE = graph->getActors()->end();
 
+	cout << "Starting write" << endl;
+	vector<string> outputVec;
+	outfile << "Actor" << '\n';
 	while (it != itE) {
-		if (it->second->isVisited()) continue;
-		outfile << it->first << '\n';
-	}	
+		if (!(it->second->isVisited())) { 
+			outputVec.push_back(it->second->name);
+		}
+		it++;
+	}
+	sort(outputVec.begin(), outputVec.end());
+
+	for (auto itF = outputVec.begin(); itF != outputVec.end(); itF++)
+		outfile << *itF << '\n';
+
+	cout << "End write" << endl;
 	outfile.close();
 	auto t2 = chrono::high_resolution_clock::now();
 	cout << "Total time: "<<chrono::duration_cast<chrono::milliseconds>(t2-t1).count() << endl;

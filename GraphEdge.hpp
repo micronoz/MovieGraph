@@ -28,9 +28,10 @@ class GraphEdge {
 		bool isRemoved() {
 			return deleted;
 		}
-	private:
+	
 		void* firstActor;
 		void* secondActor;
+	private:
 		string name;
 		int weight;
 		bool deleted;
